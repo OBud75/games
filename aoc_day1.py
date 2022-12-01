@@ -1,16 +1,25 @@
-f = open("advent_of_code_day_1_input.txt", "r")
-for line in f:
-    lines = f.readlines()
+with open ("advent_of_code_day_1_input.txt", "r") as f:
+    for line in f:
+        lines = f.readlines()
 
-max_sum = 0
-group = list()
+current_group = list()
+top_3 = list()
+
 for line in lines:
-    if line == ("\n"):
-        sum_of_group = sum(int(number) for number in group)
-        if sum_of_group > max_sum:
-            max_sum = sum_of_group
-        group = list()
-    else:
-        group.append(line)
+    if line != ("\n"):
+        current_group.append(line)
+        continue
 
-print(max_sum)
+    sum_of_current_group = sum(int(number) for number in current_group)
+    if len(top_3) < 3:
+        top_3.append(sum_of_current_group)
+
+    elif sum_of_current_group > min(top_3):
+        top_3.remove(min(top_3))
+
+    if sum_of_current_group >= min(top_3):
+        top_3.append(sum_of_current_group)
+
+    current_group = list()
+
+print(sum(top_3))
